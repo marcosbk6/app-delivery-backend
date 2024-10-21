@@ -38,7 +38,9 @@ public class Prato {
     public void setPreco(double preco) {
         this.preco = preco;
     }
+
     public String getImagemUrl() {
+
         return imagemUrl; // Método para obter a URL da imagem
     }
 

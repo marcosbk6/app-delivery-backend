@@ -20,6 +20,10 @@ public class PratoService {
         this.pratoRepository = pratoRepository;
     }
 
+    public Prato salvarPrato(Prato prato) {
+        return pratoRepository.save(prato); // Salva o prato no banco de dados
+    }
+
     public List<Prato> listarPratos() {
         return pratoRepository.findAll(); // Retorna todos os pratos do banco de dados
     }
