@@ -12,15 +12,17 @@ public class Prato {
     private String nome;
     private double preco;
     private String imagemUrl;
+    private String categoria;
 
     public Prato() {
 
     }
 
-    public Prato(String nome, double preco, String imagemUrl) {
+    public Prato(String nome, double preco, String imagemUrl, String categoria) {
         this.nome = nome;
         this.preco = preco;
         this.imagemUrl = imagemUrl;
+        this.categoria = categoria;
     }
 
     public String getNome() {
@@ -46,5 +48,13 @@ public class Prato {
 
     public void setImagemUrl(String imagemUrl) {
         this.imagemUrl = imagemUrl; // Método para definir a URL da imagem
+    }
+
+    public String getCategoria() {
+        return categoria; // Método para obter a categoria
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria; // Método para definir a categoria
     }
 }

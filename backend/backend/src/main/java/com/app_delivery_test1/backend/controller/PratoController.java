@@ -41,14 +41,27 @@ public class PratoController {
 
     public Prato adicionarPrato(@RequestParam("nomePrato") String nomePrato,
                                 @RequestParam("preco") double preco,
-                                @RequestParam("imagem") String imagemUrl) {
+                                @RequestParam("imagem") MultipartFile imagem,
+                                @RequestParam("categoria") String categoria){
 
 
-        logger.info("Recebendo requisição para adicionar prato. Nome: {}, Preço: {}", nomePrato, preco);
+        logger.info("Recebendo requisição para adicionar prato. Nome: {}, Preço: {}, Categoria: {}", nomePrato, preco, categoria);
+
+        if (imagem.isEmpty()) {
+            logger.warn("Nenhuma imagem recebida.");
+            throw new RuntimeException("Imagem não pode estar vazia.");
+        }
+
+
+        String imagemUrl = salvarImagem(imagem); // Salva a imagem e obtém a URL
+
 
         Prato prato = new Prato();
         prato.setNome(nomePrato);
         prato.setPreco(preco);
+        prato.setCategoria(categoria);
+        prato.setImagemUrl(imagemUrl); // Armazena a URL da imagem
+
 
         // Aqui você pode adicionar lógica para salvar a imagem, se necessário
 
@@ -58,6 +71,8 @@ public class PratoController {
         } else {
             logger.warn("Nenhuma URL de imagem recebida na requisição");
         }
+
+        prato.setCategoria(categoria);
 
         pratoService.salvarPrato(prato);
 
@@ -81,6 +96,10 @@ public class PratoController {
             String originalFileName = imagem.getOriginalFilename();
             String sanitizedFileName = originalFileName.replaceAll("[^a-zA-Z0-9.-]", "-"); // Substitui caracteres indesejados
 
+            String contentType = imagem.getContentType();
+            if (!contentType.startsWith("image/")) {
+                throw new RuntimeException("O arquivo não é uma imagem.");
+            }
 
             // Salva o arquivo no diretório especificado
             File file = new File(diretorio + sanitizedFileName);
